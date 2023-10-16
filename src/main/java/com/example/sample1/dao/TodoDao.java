@@ -15,7 +15,6 @@ public class TodoDao {
     @Autowired
     private DataSource dataSource;
 
-
     public List<Todo> list() throws Exception {
         String sql = "SELECT * FROM todo ORDER BY id DESC";
         Connection connection = dataSource.getConnection();
@@ -32,9 +31,10 @@ public class TodoDao {
                 list.add(todo);
             }
         }
+        return list;
     }
 
-    public void insert(Todo todo) throws SQLException {
+    public boolean insert(Todo todo) throws SQLException {
         String sql = """
                     INSERT INTO todo(todo)
                     VALUE (?)
@@ -42,10 +42,12 @@ public class TodoDao {
 
         Connection connection = dataSource.getConnection();
         PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setString(1, todo);
 
         try(connection; statement) {
+            statement.setString(1, todo.getTodo());
+            int rows = statement.executeUpdate();
 
+            return rows == 1;
         }
     }
 }
