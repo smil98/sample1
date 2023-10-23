@@ -15,14 +15,16 @@
         h1 {
             text-align:center;
         }
-        form {
-            padding:20px;
-            width:40%;
-            margin-left: 30%;
+        textarea {
+            width:100%;
             border: 1px solid gainsboro;
         }
+        form {
+            width:60%;
+            margin-left: 20%;
+        }
         button {
-            margin-top: 5%;
+            margin-top: 2%;
             margin-left: 50%;
             transform:translateX(-50%);
             background:none;
@@ -34,8 +36,8 @@
             transition:1s;
         }
         table {
-            width:60%;
-            margin-left: 20%;
+            width:80%;
+            margin-left: 10%;
             border-collapse: collapse;
         }
         th {
@@ -55,11 +57,11 @@
         td {
             text-align: center;
         }
-        td:first-child, td:nth-child(2) {
+        td:first-child, td:nth-child(2), td:nth-child(4) {
             width: 5%;
         }
         td:nth-child(3) {
-            width:65%;
+            width:60%;
             text-align:left;
             text-indent: 3%;
         }
@@ -74,11 +76,12 @@
     </style>
 </head>
 <body>
-<h1>Enter Todo</h1>
-<form action="/add" method="post">
-    <textarea name="todo" id="todo" cols="70" rows="10" placeholder="Add a task"></textarea>
+<h1>Add Tasks</h1>
+<form action="/add" method="post" enctype="multipart/form-data">
+    <textarea name="todo" id="todo" cols="30" rows="10" placeholder="Add a task"></textarea>
     <br>
-    <button>SUBMIT</button>
+    Attachments <input type="file" name="files" multiple>
+    <button>Add</button>
 </form>
 <h1>To Do List</h1>
 <div>
@@ -87,6 +90,7 @@
             <th>Check</th>
             <th>ID</th>
             <th>Todo</th>
+            <th>Number of Attachments</th>
             <th>Created Date</th>
         </tr>
         <c:forEach items="${todoList}" var="todo">
@@ -94,6 +98,13 @@
                 <td><input type="checkbox" class="todo-checkbox"></td>
                 <td>${todo.id}</td>
                 <td>${todo.todo}</td>
+                <td>
+                    <c:if test="${todo.numOfFiles > 0}">
+                        <a href="/files?id=${todo.id}">
+                            ${todo.numOfFiles}
+                        </a>
+                    </c:if>
+                </td>
                 <td>${todo.inserted}</td>
             </tr>
         </c:forEach>

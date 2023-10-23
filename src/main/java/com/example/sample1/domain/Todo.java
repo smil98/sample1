@@ -10,4 +10,5 @@ public class Todo {
     private String todo;
     private LocalDateTime inserted;
     private String priority;
+    private Integer numOfFiles;
 }
